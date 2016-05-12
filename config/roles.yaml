@@ -1,0 +1,134 @@
+---
+
+roles:
+
+  kit:
+    authorize:  
+      - ~/.ssh/id_rsa.pub
+    keys:       
+      - ~/.ssh/id_rsa
+    provisioners:
+      - { type: shell, path: "pkg/os/linux/boot/dev.sh" }
+
+  pe-puppet-master:
+    box: linuxoel7
+    public_networks:
+    vbguest:
+      - auto_update: false
+      - no_remote:   true
+    private_networks:
+      - { ip: '0.0.0.0', auto_network: true, auto_correct: true }
+    providers:
+      - { type: virtualbox, linked_clone: true }
+    cache:
+      - auto_detect: true
+      - enable: yum
+      - enable: gem
+      - scope: box
+      - synced_folder_opts:
+        type: :nfs,
+        mount_options: ['rw', 'vers=3', 'tcp', 'nolock']
+    customize: [modifyvm, !ruby/sym id, "--cpuexecutioncap", "100"]
+    ports:
+      - { map: 443,   to: 443,   protocol: tcp }
+      - { map: 4433,  to: 4433,  protocol: tcp }
+      - { map: 8140,  to: 8140,  protocol: tcp }
+      - { map: 61613, to: 61613, protocol: tcp }
+    provisioners:
+      - { type: hosts, sync_hosts: true }
+      - { type: pe_bootstrap, role: !ruby/sym master, relocate_manifests: true }
+    synced_folders:
+      - host_path: '.'
+        guest_path: '/vagrant'
+        disabled: false
+    variables:
+      - key: APP_ENV
+        value: sandbox
+
+  pe-puppet-agent:
+    box: linuxoel7
+    ssh:
+      - username: admin
+        forward_x11: true
+        forward_agent: true 
+    vbguest:
+      - auto_update: false
+        no_remote:   true
+    public_networks:
+    private_networks:
+      - { ip: '0.0.0.0', auto_network: true , auto_correct: true }
+    providers:
+      - { type: virtualbox, linked_clone: true }
+    cache:
+      - auto_detect: true
+      - enable: yum
+      - enable: gem
+      - scope: box
+      - synced_folder_opts:
+        type: :nfs,
+        mount_options: ['rw', 'vers=3', 'tcp', 'nolock']
+    customize: [modifyvm, !ruby/sym id, "--cpuexecutioncap", "100"]
+    ports:
+      - { map: 8140,  to: 8140,  protocol: tcp }
+      - { map: 61613, to: 61613, protocol: tcp }
+    autostart: false
+    provisioners:
+      - { type: hosts, sync_hosts: true }
+      - { type: pe_bootstrap ,  role: !ruby/sym agent }
+      - { type: pe_agent , master_vm: master , master: master.domain.com }
+    synced_folders:
+      - host_path: '.'
+        guest_path: '/vagrant'
+        disabled: false
+    synced_folders:
+      - host_path: 'pkg/'
+        guest_path: '/home/vagrant/repo/pkg/'
+    variables:
+      - key: APP_ENV
+        value: sandbox
+
+  windows:
+    providers:
+      - gui: true
+    synced_folders:
+      - host_path: 'tmp/windows'
+        guest_path: 'C:\Temp'
+
+  t:
+    provider:
+      type:   virtualbox
+      memory: 512
+      cpus:   1 
+  s:
+    provider:
+      type:   virtualbox
+      memory: 1024
+      cpus:   1
+  m:
+    provider:
+      type:   virtualbox
+      memory: 2048
+      cpus:   1
+  l:
+    provider:
+      type:   virtualbox
+      memory: 4096
+      cpus:   2
+  xl:
+    provider:
+      type:   virtualbox
+      memory: 8192
+      cpus:   2
+  xxl:
+    provider:
+      type:   virtualbox
+      memory: 16384
+      cpus:   2
+
+  vmware:
+    provider:
+      type: vmware
+      vmx:
+        memsize: 512
+        numvcpus: 1
+

@@ -1,0 +1,33 @@
+---
+:backends:
+  - yaml
+  - json
+
+:yaml:
+  :datadir: "config/environments/%{::environment}/"
+:json:
+  :datadir: "config/environments/%{::environment}/"
+
+:hierarchy:
+  - config
+  - "data_source"
+  - "configuration"
+  - "users"
+  - "%{::custom_location}"
+  - "node/%{::fqdn}"
+  - "environment/%{environment}"
+  #- "%{::environment}"
+  - "%{::clientcert}"
+  - "nodes/%{::trusted.certname}"
+  #- "virtual/%{::virtual}"
+  - defaults
+  - "common"
+  - company
+  - global
+
+:logger: console
+
+baseline_user: vagrant
+baseline_dotfiles:  https://github.com/bltavares/dot-files.git
+baseline_use_zsh: false
+

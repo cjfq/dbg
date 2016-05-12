@@ -1,0 +1,12 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = 'some-box'
+  config.ssh.username = admin
+  config.ssh.forward_agent = true
+  config.ssh.forward_x11 = true
+  config.proxy.http     = "http://192.168.0.22:8080/"
+  config.proxy.no_proxy = "localhost,127.0.0.1"
+  config.proxy.enabled = { git: false, docker: false }
+  if Vagrant.has_plugin?("vagrant-cachier")
+    config.cache.scope = :box
+  end
+end

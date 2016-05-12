@@ -1,0 +1,7 @@
+---
+boxes:
+  linuxoel7: http://cloud.terry.im/vagrant/oraclelinux-7-x86_64.box
+  windows81: https://atlas.hashicorp.com/avevitaliy/boxes/windows_8.1_x64
+  win2012R2: https://atlas.hashicorp.com/opentable/boxes/win-2012r2-standard-amd64-nocm/versions/1.0.0/providers/virtualbox.box
+  win2016C5: https://atlas.hashicorp.com/jacqinthebox/boxes/windowsserver2016core5
+  win2016RC: https://atlas.hashicorp.com/jacqinthebox/boxes/windowsserver2016

@@ -1,0 +1,7 @@
+---
+
+pe_build:
+  version:            2016.1.2
+  verbose:            true
+  master:             master
+  filename:           puppet-enterprise-2016.1.2-el-7-x86_64.tar.gz

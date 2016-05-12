@@ -1,0 +1,63 @@
+---
+ssh:
+  insert_key: false
+  username:   admin
+
+vms:
+- name: master
+  hostname: master.domain.com
+  autostart: true
+  roles:
+  - pe-puppet-master
+  - xl
+
+- name: dev
+  hostname: dev.domain.com
+  autostart: true
+  folders: 
+    - { map: /Users, to: /tmp}
+  roles:
+  - pe-puppet-agent
+  - kit
+  - l
+
+- name: linux
+  hostname: linux.domain.com
+  autostart: false
+  roles:
+  - pe-puppet-agent
+  - m
+
+- name: win2k12
+  hostname: win2k12.domain.com
+  autostart: false
+  box: win2012R2
+  roles:
+  - pe-puppet-agent
+  - windows
+  - m
+
+- name: win2k16
+  hostname: win2k16.domain.com
+  autostart: false
+  box: win2016C5
+  roles:
+  - pe-puppet-agent
+  - windows
+  - m
+
+- name: win2k16r
+  hostname: win2k16r.domain.com
+  autostart: false
+  box: win2016RC
+  roles:
+  - pe-puppet-agent
+  - windows
+  - m
+  
+- name: application.domain.com
+  hostname: application
+  autostart: false
+  roles:
+  - pe-puppet-agent
+  - s

@@ -1,0 +1,9 @@
+pry
+pry-doc
+ruby-debug
+ruby-debug-base
+ruby-debug-ide
+test-unit-full
+rspec-puppet
+bundler
+debase
